@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+                <div class="bg-white border border-slate-300 shadow-xs">
+                <div class="bg-slate-50 border-b border-slate-300 px-6 py-3">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800">Update User</h2>
+                </div>
+                <form action="/update" method="POST" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Full Legal Name</label>
+                        <input type="text" name="name" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Student ID / Number of user being updated</label>
+                        <input type="text" name="student_number_updating" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm font-mono focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Institutional Email</label>
+                        <input type="email" name="email" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm font-mono focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Grade</label>
+                            <input type="text" name="grade" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Account State</label>
+                            <select name="is_active" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                                <option value="true">Active</option>
+                                <option value="false">Non-Active</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Homeroom Teacher</label>
+                        <input type="text" name="homeroom_teacher" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs uppercase tracking-wider py-2.5 transition cursor-pointer border border-slate-900 mt-2">
+                        Commit Record to System
+                    </button>
+                </form>
+            </div>
+    
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myDahL | Academic Management System</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .font-brand { font-family: 'Cinzel', Georgia, serif; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen border-t-4 border-slate-900 antialiased">
+
+    
+    <header class="bg-slate-900 text-slate-100 px-8 py-4 flex justify-between items-center shadow-md border-b border-slate-800">
+        
+    <div class="flex items-center space-x-3">
+        <span class="font-brand text-2xl font-bold tracking-wider text-slate-100 border-r border-slate-700 pr-4">myDahL</span>
+        <span class="text-xs font-semibold uppercase tracking-widest text-slate-400">Institutional Portal</span>
+    </div>
+
+    <div class="flex items-center space-x-6">
+        <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-300">School Dashboard</h1>
+        {% if username %}
+        <div class="hidden sm:flex items-center space-x-3 text-xs text-slate-400 border-l border-slate-700 pl-6">
+            <span>Authenticated user: <strong class="text-slate-200 font-medium">{{ username }}</strong></span>
+            <a href="/logout" class="text-slate-300 hover:text-white underline font-semibold transition">Sign Out</a>
+            
+            <a href="/updateuser" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-3 py-1 rounded transition">
+                Update Student Users
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</header>
+
+    
+    <div class="bg-slate-800 text-slate-300 px-8 py-2 text-xs flex justify-between items-center border-b border-slate-700">
+        <div>System Status: <span class="text-emerald-400 font-medium">● Operational</span></div>
+        <div id="current-date" class="font-mono text-slate-400">Academic Records Division</div>
+    </div>
+
+    
+    <main class="max-w-7xl mx-auto px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        
+        <section class="lg:col-span-8 space-y-8">
+
+            
+            <div class="bg-white border border-slate-300 shadow-xs p-6">
+                <div class="border-b border-slate-200 pb-3 mb-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Student Record Lookup</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Query the institutional repository using a unique student identification key.</p>
+                </div>
+                
+                <form method="post" action="/search" class="flex gap-2">
+                    <div class="relative flex-1">
+                        <label for="student_id" class="sr-only">Student ID</label>
+                        <input 
+                            type="text" 
+                            id="student_id"
+                            name="student_id" 
+                            placeholder="Enter Student ID (e.g., 10535)" 
+                            value="{{ searched_id if searched_id else '' }}"
+                            class="w-full px-3 py-2 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 font-mono transition"
+                        >
+                    </div>
+                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs uppercase tracking-wider px-6 py-2 transition cursor-pointer border border-slate-900">
+                        Search Database
+                    </button>
+                </form>
+            </div>
+
+            
+            <div class="bg-white border border-slate-300 shadow-xs">
+                
+                <div class="bg-slate-50 border-b border-slate-300 px-6 py-4 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800">Student File View</h2>
+                        <span class="text-xs text-slate-500">Official Student Profile and Administrative Detail</span>
+                    </div>
+                    {% if student %}
+                        {% if student.is_active %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 border border-emerald-600 bg-emerald-50 text-emerald-800 text-xs font-semibold font-mono">
+                                STATUS: ACTIVE
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 border border-red-600 bg-red-50 text-red-800 text-xs font-semibold font-mono">
+                                STATUS: NON-ACTIVE
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="p-6">
+                    {% if student %}
+                        
+                        <table class="w-full text-left text-sm border-collapse">
+                            <tbody>
+                                <tr class="border-b border-slate-200">
+                                    <th class="py-3 px-4 bg-slate-50 border-r border-slate-200 font-semibold text-xs uppercase text-slate-600 w-1/3">Full Name</th>
+                                    <td class="py-3 px-4 font-medium text-slate-900">{{ student.name }}</td>
+                                </tr>
+                                <tr class="border-b border-slate-200">
+                                    <th class="py-3 px-4 bg-slate-50 border-r border-slate-200 font-semibold text-xs uppercase text-slate-600">Student Number</th>
+                                    <td class="py-3 px-4 font-mono font-medium text-slate-900">{{ student.student_number }}</td>
+                                </tr>
+                                <tr class="border-b border-slate-200">
+                                    <th class="py-3 px-4 bg-slate-50 border-r border-slate-200 font-semibold text-xs uppercase text-slate-600">Email Address</th>
+                                    <td class="py-3 px-4 text-slate-800 font-mono text-xs">{{ student.email }}</td>
+                                </tr>
+                                <tr class="border-b border-slate-200">
+                                    <th class="py-3 px-4 bg-slate-50 border-r border-slate-200 font-semibold text-xs uppercase text-slate-600">Academic Grade</th>
+                                    <td class="py-3 px-4 font-medium text-slate-900">{{ student.grade }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="py-3 px-4 bg-slate-50 border-r border-slate-200 font-semibold text-xs uppercase text-slate-600">Homeroom Supervisor</th>
+                                    <td class="py-3 px-4 font-medium text-slate-900">{{ student.homeroom_teacher }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="py-3 px-4 bg-slate-50 border-r border-slate-200 font-semibold text-xs uppercase text-slate-600">Student Number</th>
+                                    <td class="py-3 px-4 font-medium text-slate-900">{{ student.student_number }}</td>
+                                </tr>                                
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="text-center py-12 text-slate-500 border-2 border-dashed border-slate-200">
+                            <svg class="mx-auto h-8 w-8 text-slate-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p class="text-xs font-semibold text-slate-600">No Student Profile Loaded</p>
+                            <p class="text-xs text-slate-400 mt-1">Execute a search by Student Number to retrieve institutional record details.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </section>
+
+        
+        <section class="lg:col-span-4 space-y-8">
+
+            
+            <div class="bg-white border border-slate-300 shadow-xs">
+                <div class="bg-slate-50 border-b border-slate-300 px-6 py-3">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800">Enroll New Student</h2>
+                </div>
+                <form action="/add" method="POST" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Full Legal Name</label>
+                        <input type="text" name="name" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Student ID / Number</label>
+                        <input type="text" name="student_number" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm font-mono focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Institutional Email</label>
+                        <input type="email" name="email" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm font-mono focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Grade</label>
+                            <input type="text" name="grade" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Account State</label>
+                            <select name="is_active" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                                <option value="true">Active</option>
+                                <option value="false">Non-Active</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Homeroom Teacher</label>
+                        <input type="text" name="homeroom_teacher" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition">
+                    </div>
+
+                    <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs uppercase tracking-wider py-2.5 transition cursor-pointer border border-slate-900 mt-2">
+                        Commit Record to System
+                    </button>
+                </form>
+            </div>
+
+            
+            <div class="bg-white border border-slate-300 shadow-xs">
+                <div class="bg-slate-50 border-b border-slate-300 px-6 py-3">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800">Expunge Record</h2>
+                </div>
+                <form action="/remove" method="POST" class="p-6 space-y-4">
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Permanently delete a student file from the primary registry using their assigned ID.
+                    </p>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Target Student ID</label>
+                        <input type="text" name="student_number" placeholder="134" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 text-sm font-mono focus:bg-white focus:outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700 transition">
+                    </div>
+
+                    <button type="submit" class="w-full bg-stone-100 hover:bg-red-700 hover:text-white text-red-700 border border-red-300 font-semibold text-xs uppercase tracking-wider py-2.5 transition cursor-pointer" onclick="return confirm('Confirm deletion of student record? This action cannot be reversed.');">
+                        Remove Student File
+                    </button>
+                </form>
+            </div>
+
+        </section>
+
+    </main>
+
+    
+    <footer class="max-w-7xl mx-auto px-8 py-6 text-center text-xs text-slate-500 border-t border-slate-200 mt-12">
+        <p>© myDahL Educational Systems. Unauthorized access or modification of records is strictly prohibited.</p>
+    </footer>
+
+</body>
+</html>
